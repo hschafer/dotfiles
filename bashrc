@@ -48,38 +48,10 @@ alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\
 alias ccat='pygmentize -g'
 mcd () { mkdir -p "$1" && cd "$1"; }
 
-## Some system dependent aliases
-alias f='open -a Finder ./'
-alias octave='/usr/local/octave/3.8.0/bin/./octave'
-alias uw='cd ~/Documents/UW'
-alias ta='cd ~/Documents/UW/TA'
-alias projects='cd Documents/UW/332/Projects/'
-alias sublime='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 &'
-alias sub='sublime'
-alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
-
-
-## PATH Shit
-# added by Anaconda 2.1.0 installer
-export PATH="//anaconda/bin:$PATH"
-# added tex commands
-export PATH="/usr/local/texlive/2014/bin:$PATH"
-# add libsvm
-export PATH="/Library/libsvm-3.20:$PATH"
-# add scala
-export SCALA_HOME="/usr/local/share/scala-2.11.6"
-export PATH="$PATH:$SCALA_HOME/bin"
-# Setting PATH for Python 3.4
-# The orginal version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
-PATH="${PATH}:~/bin"
-export PATH
-
-# Add GHC 7.8.4 to the PATH, via http://ghcformacosx.github.io/
-export GHC_DOT_APP="/Library/ghc-7.8.4.app"
-if [ -d "$GHC_DOT_APP" ]; then
-    export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-fi
+## System depended commands
+alias clint="~/Documents/333/clint.py $1"
+alias cpplint="~/Documents/333/cpplint.py $1"
+alias compile="python ~/bin/compile.py $1"
 
 ## Prompt stuff
 
@@ -100,7 +72,7 @@ set_prompt () {
 
 
     # Set line of dashes
-    PS1=$(seq -f '_' -s '' $(tput cols))"\n| "
+    PS1="$HORIZONTAL_LINE\n| "
 
     # If it was successful, print a green check mark. Otherwise, print
     # a red X.
@@ -115,11 +87,11 @@ set_prompt () {
     if [[ $EUID == 0 ]]; then
         PS1+="$Red\\h "
     else
-        PS1+="$White\\u@\\h "
+        PS1+="$Green\\u@\\h "
     fi
     # Print the working directory and prompt marker in blue, and reset
     # the text color to the default.
-    PS1+=": \w$Reset "
+    PS1+=": $Reset\\w" 
     
     # Add git prompt
     PS1+=$(__git_ps1)
