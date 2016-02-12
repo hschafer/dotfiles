@@ -1,0 +1,29 @@
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[user]
+	name = Hunter
+	email = hschafer@cs.washington.edu
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[push]
+	default = simple
+[alias]
+	ci = commit
+	st = status
+	co = checkout
+	oneline = log --pretty=oneline
+	br = branch
+	la = log --pretty="format:%ad %h (%an): %s" --date=short
+[core]
+	excludesfile = /Users/Hunter/.gitignore_global
+	editor = /usr/bin/vim
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
