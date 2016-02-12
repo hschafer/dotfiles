@@ -115,7 +115,8 @@ set ignorecase
 set smartcase
 
 " Highlight search results
-set hlsearch
+" set hlsearch
+
 
 " Makes search act like search in modern browsers
 set incsearch 
@@ -138,7 +139,6 @@ set t_vb=
 set tm=500
 
 " Add a bit extra margin to the left
-set foldcolumn=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -308,6 +308,10 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.cc :call DeleteTrailingWS()
+autocmd BufWrite *.c :call DeleteTrailingWS()
+autocmd BufWrite *.h :call DeleteTrailingWS()
+autocmd BufWrite *.java :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -430,37 +434,15 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
-:set nohlsearch
 
-" Give a shortcut key to NERDTree
-map <F2> :NERDTreeToggle<CR>
-
-" Some stuff for solarized
-set ruler
-set cursorline
-"set number
-"call pathogen#infect()
-"syntax on
-"
-"filetype plugin indent on
-"
-"syntax enable
-"
-"" Solarized stuff
-let g:solarized_termtrans = 1
-set background=dark
-colorscheme solarized
-
-" Custom commands
+" Additional changes
 inoremap jk <esc>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 
 execute pathogen#infect()
 
-" air-line
 let g:airline_powerline_fonts = 1
-set guifont=DejaVu\ Sans:s12
 set noshowmode
 
 if !exists('g:airline_symbols')
@@ -481,11 +463,5 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
-" airline symbols
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
-"let g:airline_symbols.branch = ''
-"let g:airline_symbols.readonly = ''
-"let g:airline_symbols.linenr = ''
+
+:command Mks mksession .session
