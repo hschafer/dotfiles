@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/Users/Hunter/Documents/UW/344/hw4'
+let g:netrw_dirhist_2='/Users/Hunter/Documents/UW/373_15au/HW3/projects/jtpraino'
+let g:netrw_dirhist_3='/Users/Hunter/Documents/UW/344/hw6'
+let g:netrw_dirhist_4='/Users/Hunter/Documents/UW/373_15au/HW5/students'
+let g:netrw_dirhist_5='/Users/Hunter/.vim'
+let g:netrw_dirhist_6='/Users/Hunter/.vim/colors'
+let g:netrw_dirhist_7='/Users/Hunter/Documents/UW/373_15au/HW5/students'
+let g:netrw_dirhist_8='/Users/Hunter/Documents'
