@@ -1,31 +1,67 @@
-source ~/.git-prompt.sh
+# Source global defs
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
 
-alias attu='ssh hschafer@attu.cs.washington.edu'
-alias ll='ls -aG'
-alias emcs='emacs'
-alias emac='emacs'
-
-# The next lines set up some aliases 
+## Making built in commands better
 alias ls='ls -G'
 alias l='ls'
+alias ll='ls -a'
 alias grep='grep --color'
-alias emcs='emacs'
-alias emac='emacs'
+alias cd='cd -P'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias mkdir='mkdir -pv'
+function cd() { builtin cd "$@" && ls; }
+# Colorful man pages
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		    man "$@"
+}
+
+## Moving on around
+alias ..='cd ../'                           # Go back 1 directory level
+alias ...='cd ../../'                       # Go back 2 directory levels
+alias .2='cd ../..'                         # Go back 2 directory levels
+alias .3='cd ../../../'                     # Go back 3 directory levels
+alias .4='cd ../../../../'                  # Go back 4 directory levels
+alias .5='cd ../../../../../'               # Go back 5 directory levels
+alias .6='cd ../../../../../../'
+
+## Really helpful aliases 
+alias attu='ssh hschafer@attu.cs.washington.edu'
+alias a='attu'
+alias sql='sqlite3'
+alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
+alias unmount='cd; umount attu; rm -r ~/attu'
+alias vim='mvim'
+alias v='vim'
+alias vims='vim -S .session'
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
+alias ccat='pygmentize -g'
+mcd () { mkdir -p "$1" && cd "$1"; }
+
+## Some system dependent aliases
+alias f='open -a Finder ./'
 alias octave='/usr/local/octave/3.8.0/bin/./octave'
 alias uw='cd ~/Documents/UW'
 alias ta='cd ~/Documents/UW/TA'
 alias projects='cd Documents/UW/332/Projects/'
-alias even='echo I cant'
 alias sublime='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 &'
 alias sub='sublime'
-alias sql='sqlite3'
-alias haskell='ghci'
-alias hskl='ghci'
-#alias python='python3.4'
+alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
+
+
+## PATH Shit
 # added by Anaconda 2.1.0 installer
 export PATH="//anaconda/bin:$PATH"
-# added sox
-export PATH="~/Downloads/sox-14.4.1/:$PATH"
 # added tex commands
 export PATH="/usr/local/texlive/2014/bin:$PATH"
 # add libsvm
@@ -44,8 +80,10 @@ export GHC_DOT_APP="/Library/ghc-7.8.4.app"
 if [ -d "$GHC_DOT_APP" ]; then
     export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
 fi
-#export PS1=$(seq -f '_' -s '' $(tput cols))"\n| \[\e[1;37m\]\u@\h : \w\[\e[0m\]\$(__git_ps1)\n| => "
-#export PS2="| => "
+
+## Prompt stuff
+
+source ~/.git-prompt.sh
 
 set_prompt () {
     Last_Command=$? # Must come first!
@@ -63,7 +101,7 @@ set_prompt () {
 
     # Set line of dashes
     PS1=$(seq -f '_' -s '' $(tput cols))"\n| "
-    
+
     # If it was successful, print a green check mark. Otherwise, print
     # a red X.
     if [[ $Last_Command == 0 ]]; then
@@ -81,7 +119,7 @@ set_prompt () {
     fi
     # Print the working directory and prompt marker in blue, and reset
     # the text color to the default.
-    PS1+=": \w$Reset " 
+    PS1+=": \w$Reset "
     
     # Add git prompt
     PS1+=$(__git_ps1)
@@ -92,48 +130,9 @@ set_prompt () {
 
 }
 PROMPT_COMMAND='set_prompt'
-alias cd='cd -P'
-alias a='attu'
-alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
-alias unmount='cd; umount attu; rm -r ~/attu'
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi
-
-
-# Colorful man pages
-man() {
-	env \
-		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-		LESS_TERMCAP_md=$(printf "\e[1;31m") \
-		LESS_TERMCAP_me=$(printf "\e[0m") \
-		LESS_TERMCAP_se=$(printf "\e[0m") \
-		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-		LESS_TERMCAP_ue=$(printf "\e[0m") \
-		LESS_TERMCAP_us=$(printf "\e[1;32m") \
-		    man "$@"
-}
-
-# Syntax highlighting cat
-alias ccat='pygmentize -g'
-
-# Some stolen stuff from https://gist.github.com/natelandau/10654137
+## Some stolen stuff from https://gist.github.com/natelandau/10654137
 export BLOCKSIZE=1k
-alias cp='cp -iv'
-alias mv='mv -iv'
-alias mkdir='mkdir -pv'
-function cd() { builtin cd "$@" && ls; }
-alias ..='cd ../'                           # Go back 1 directory level
-alias ...='cd ../../'                       # Go back 2 directory levels
-alias .2='cd ../..'                         # Go back 2 directory levels
-alias .3='cd ../../../'                     # Go back 3 directory levels
-alias .4='cd ../../../../'                  # Go back 4 directory levels
-alias .5='cd ../../../../../'               # Go back 5 directory levels
-alias .6='cd ../../../../../../'
-alias f='open -a Finder ./'
-mcd () { mkdir -p "$1" && cd "$1"; }
-alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 extract () {
     if [ -f $1 ] ; then
       case $1 in
@@ -154,11 +153,9 @@ extract () {
         echo "'$1' is not a valid file"
     fi
 }
-alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 
-alias vim='mvim'
-alias v='vim'
 
+## Some startup stuff
 if [ -z $TMUX ]; then
     tmux
 fi
@@ -166,3 +163,8 @@ fi
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
+
