@@ -4,10 +4,10 @@ if [ -f /etc/bashrc ]; then
 fi
 
 ## Making built in commands better
-alias ls='ls -G'
+alias ls='ls --color'
 alias l='ls'
 alias ll='ls -a'
-alias grep='grep --color'
+alias grep='grep -G'
 alias cd='cd -P'
 alias cp='cp -iv'
 alias mv='mv -iv'
@@ -41,7 +41,6 @@ alias a='attu'
 alias sql='sqlite3'
 alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
 alias unmount='cd; umount attu; rm -r ~/attu'
-alias vim='mvim'
 alias v='vim'
 alias vims='vim -S .session'
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
@@ -57,6 +56,11 @@ alias compile="python ~/bin/compile.py $1"
 
 source ~/.git-prompt.sh
 
+HORIZONTAL_LINE=""
+for i in $(seq $(tput cols)); do
+    HORIZONTAL_LINE=$HORIZONTAL_LINE'_'
+done
+
 set_prompt () {
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'
@@ -69,7 +73,6 @@ set_prompt () {
 
     GIT_PS1_SHOWUNTRACKEDFILES="True"
     GIT_PS1_SHOWDIRTYSTATE="True"
-
 
     # Set line of dashes
     PS1="$HORIZONTAL_LINE\n| "
@@ -135,8 +138,3 @@ fi
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
-
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
-fi
-
