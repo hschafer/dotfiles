@@ -131,12 +131,6 @@ extract () {
     fi
 }
 
-
-## Some startup stuff
-if [ -z $TMUX ]; then
-    tmux
-fi
-
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
