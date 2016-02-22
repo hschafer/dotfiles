@@ -3,6 +3,8 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+set -o vi
+
 ## Making built in commands better
 alias ls='ls --color'
 alias l='ls'
