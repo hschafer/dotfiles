@@ -56,8 +56,8 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -188,8 +188,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -217,7 +217,6 @@ map j gj
 map k gk
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
 map <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
@@ -270,6 +269,9 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+set splitright
+set splitbelow
+
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -307,7 +309,9 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.sml :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -318,7 +322,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
 " Open Ack and put the cursor in the right position
-map <leader>g :Ack 
+map <leader>/ :Ack 
 
 " When you press <leader>r you can search and replace the selected text
 vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
@@ -433,7 +437,7 @@ endfunction
 :set nohlsearch
 
 " Give a shortcut key to NERDTree
-map <F2> :NERDTreeToggle<CR>
+map <leader>ne :NERDTreeFocus<CR>
 
 " Some stuff for solarized
 set ruler
@@ -447,15 +451,14 @@ set cursorline
 "syntax enable
 "
 "" Solarized stuff
-let g:solarized_termtrans = 1
-set background=dark
+""let g:solarized_termtrans = 1
+set background=light
 colorscheme solarized
 
 " Custom commands
 inoremap jk <esc>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
-
 execute pathogen#infect()
 
 " air-line
@@ -470,12 +473,17 @@ endif
 " unicode symbols
 let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
 let g:airline_right_sep = '«'
 let g:airline_right_sep = '◀'
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline_symbols.linenr = '␊'
 let g:airline_symbols.linenr = '␤'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.branch = ''
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
@@ -489,3 +497,39 @@ let g:airline_symbols.whitespace = 'Ξ'
 "let g:airline_symbols.branch = ''
 "let g:airline_symbols.readonly = ''
 "let g:airline_symbols.linenr = ''
+
+""" Vundle
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes' 
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
+Plugin 'xolox/vim-notes'
+Plugin 'xolox/vim-misc'
+Plugin 'jlanzarotta/bufexplorer'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+""" To change cursors (mac only)
+let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+"let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+set timeoutlen=1000 ttimeoutlen=0
+
+""" Some new things
+map q: :q
+nnoremap <Leader>w :w<CR>
+
+""" Bindings for fugitive
+map <Leader>gs :Gstatus<cr>
+map <Leader>gd :Gvdiff<cr>
+map <leader>gr :Gread<cr>
+

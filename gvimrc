@@ -1,1 +1,1 @@
-autocmd VimLeave * :!open -a iTerm
+autocmd VimLeave * :!open -a iTerm\ 2
