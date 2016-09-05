@@ -3,8 +3,8 @@
 	clean = git media clean %f
 	smudge = git media smudge %f
 [user]
-	name = Hunter
-	email = hschafer@cs.washington.edu
+	name = Hunter Schafer
+	email = hschafer@uw.edu
 [filter "hawser"]
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
@@ -20,7 +20,7 @@
 	la = log --pretty="format:%ad %h (%an): %s" --date=short
 [core]
 	excludesfile = /Users/Hunter/.gitignore_global
-	editor = /usr/bin/vim
+	editor = nvim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
