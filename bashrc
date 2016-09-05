@@ -1,6 +1,11 @@
+XDG_CONFIG_HOME=~/.config
 # Source global defs
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
+fi
+
+if [ -f ~/.profile ]; then
+    source ~/.profile
 fi
 
 ## Making built in commands better
@@ -41,9 +46,26 @@ alias a='attu'
 alias sql='sqlite3'
 alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
 alias unmount='cd; umount attu; rm -r ~/attu'
-alias vim='mvim'
-alias v='vim'
 alias vims='vim -S .session'
+USE_MACVIM=false
+function vim() {
+   if [ $USE_MACVIM = "true" ]
+   then
+      mvim $@
+   else
+      nvim $@
+   fi
+}
+alias v='vim'
+function macvim() {
+   if [ $USE_MACVIM = "true" ]
+   then
+      USE_MACVIM="false"
+   else 
+      USE_MACVIM="true"
+   fi
+   echo "USE_MACVIM is now $USE_MACVIM"
+}
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 alias ccat='pygmentize -g'
 mcd () { mkdir -p "$1" && cd "$1"; }
@@ -72,7 +94,8 @@ export PATH="$PATH:$SCALA_HOME/bin"
 # Setting PATH for Python 3.4
 # The orginal version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
-PATH="${PATH}:~/bin"
+PATH="~/bin:$PATH"
+PATH="$PATH:/usr/local/smlnj/bin"
 export PATH
 
 # Add GHC 7.8.4 to the PATH, via http://ghcformacosx.github.io/
@@ -115,7 +138,7 @@ set_prompt () {
     if [[ $EUID == 0 ]]; then
         PS1+="$Red\\h "
     else
-        PS1+="$White\\u@\\h "
+        PS1+="$Reset\\u@\\h "
     fi
     # Print the working directory and prompt marker in blue, and reset
     # the text color to the default.
@@ -155,16 +178,36 @@ extract () {
 }
 
 
-## Some startup stuff
-if [ -z $TMUX ]; then
-    tmux
-fi
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+   . $(brew --prefix)/etc/bash_completion
 fi
 
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+export NVM_DIR="/Users/Hunter/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+#################################################################
+# MySQL
+#################################################################
+export MYSQL_PS1="(\u@\h) [\d]> "
+
+#################################################################
+# Helpful Aliases
+#################################################################
+alias gcal='gcalcli'
+
+#################################################################
+# Set up that PATH
+#################################################################
+export PATH="$PATH:$HOME/.cargo/bin"
+
+#################################################################
+# Rust
+#################################################################
+export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
