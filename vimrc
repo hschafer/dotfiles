@@ -16,6 +16,8 @@ Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'ervandew/supertab'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'haya14busa/incsearch-easymotion.vim'
 Plugin 'jistr/vim-nerdtree-tabs'
 Bundle 'low-ghost/nerdtree-fugitive'
 Plugin 'morhetz/gruvbox'
@@ -24,23 +26,23 @@ Plugin 'racer-rust/vim-racer'
 Plugin 'rizzatti/dash.vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 Plugin 'timonv/vim-cargo'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vimlab/split-term.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-notes'
 Plugin 'zchee/deoplete-jedi'
 
 call vundle#end()           
 filetype plugin indent on
-
 
 " ----------------------------------------------------------------------------
 "  Basic vim setup
 " ----------------------------------------------------------------------------
 :let mapleader = ","
 :imap jk <Esc>
-
 
 " ----------------------------------------------------------------------------
 "  Coding Shit
@@ -50,19 +52,6 @@ set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
-
-"au BufNewFile,BufRead *.py set tabstop=4 
-"au BufNewFile,BufRead *.py set softtabstop=4 
-"au BufNewFile,BufRead *.py set shiftwidth=4 
-"au BufNewFile,BufRead *.py set textwidth=79 
-"au BufNewFile,BufRead *.py set expandtab 
-"au BufNewFile,BufRead *.py set autoindent 
-"au BufNewFile,BufRead *.py set fileformat=unix
-"
-"au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 
-"au BufNewFile,BufRead *.js, *.html, *.css set softtabstop=2
-"au BufNewFile,BufRead *.js, *.html, *.css set shiftwidth=2 
 
 " ----------------------------------------------------------------------------
 "  Moving around, tabs, windows and buffers
@@ -127,7 +116,7 @@ endif
 :let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 " ----------------------------------------------------------------------------
-"  Apperance 
+"  Appearance 
 " ----------------------------------------------------------------------------
 syntax enable
 
@@ -149,45 +138,36 @@ set noshowmode    " Hide statusline
 
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#quickfix#enabled = 1
 
-" Show just the filename
-"let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:airline_section_warning .= 
+"	\ '%{neomake#statusline#LoclistStatus()}'. 
+"	\ 'qf: %{neomake#statusline#QflistStatus()}'
 
 " ----------------------------------------------------------------------------
 "  Easy Motion
 " ----------------------------------------------------------------------------
-map  <Leader>/ <Plug>(easymotion-bd-f)
+map <Leader><space> <Plug>(easymotion-bd-f)
+map <Leader>/ <Plug>(incsearch-easymotion-/)
+map <Leader>? <Plug>(incsearch-easymotion-?)
+map <Leader>g/ <Plug>(incsearch-easymotion-stay)
 
-" ----------------------------------------------------------------------------
-"  YouCompleteMe
-" ----------------------------------------------------------------------------
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'  
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_rust_src_path = '/usr/local/rust/rustc-1.11.0/src'
-let g:ycm_path_to_python_interpreter = '/anaconda/bin/python'
-
-
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_server_use_vim_stdout = 0
-let g:ycm_server_log_level = 'debug'
-
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " ----------------------------------------------------------------------------
 "  Syntastic
 " ----------------------------------------------------------------------------
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_loc_list_height=4
-
-" Because neomake does a better job at rust
-let g:syntastic_rust_checkers = []
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_loc_list_height=4
+"
+"" Because neomake does a better job at rust
+"let g:syntastic_rust_checkers = []
 
 " ----------------------------------------------------------------------------
 "  Deoplete 
@@ -212,14 +192,22 @@ let $RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
 " ----------------------------------------------------------------------------
 " Neomake configuration.
 augroup my_neomake_cmds
-    autocmd!
     " Have neomake run cargo when Rust files are saved.
-    autocmd BufRead *.rs Neomake! cargo
-    autocmd BufWritePost *.rs Neomake! cargo
+    "autocmd BufRead *.rs Neomake! cargo
+    "autocmd BufWritePost *.rs Neomake! cargo
+    autocmd!
 augroup END
-let g:neomake_verbose = 1
-let g:neomake_open_list = 1
+
+augroup vimrc_neomake
+  au!
+  autocmd! BufWritePost * Neomake
+augroup END```
+
+let g:neomake_verbose = 0
 let g:neomake_list_height = 4
+let g:neomake_open_list = 2  " So it doesn't jump down to Quickfix
+let g:neomake_airline = 1
+
 let g:neomake_rust_enabled_makers = ['cargo']
 
 " ----------------------------------------------------------------------------
@@ -227,3 +215,7 @@ let g:neomake_rust_enabled_makers = ['cargo']
 " ----------------------------------------------------------------------------
 autocmd BufRead Cargo.toml,Cargo.lock,*.rs compiler cargo
 
+" ----------------------------------------------------------------------------
+"  Vim-Notes
+" ----------------------------------------------------------------------------
+:let g:notes_directories = ['~/Documents/Notes', '~/Documents/UW/143_16au/notes', '~/Documents/UW/461/notes']
