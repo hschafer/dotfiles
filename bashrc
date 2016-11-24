@@ -79,6 +79,7 @@ alias projects='cd Documents/UW/332/Projects/'
 alias sublime='/Applications/Sublime\ Text\ 2.app/Contents/MacOS/Sublime\ Text\ 2 &'
 alias sub='sublime'
 alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
+alias difff='git diff --color | diff-so-fancy'
 
 
 ## PATH Shit
@@ -146,7 +147,12 @@ set_prompt () {
     
     # Add git prompt
     PS1+=$(__git_ps1)
-
+    
+    # Add virtualenv
+    if ! [ -z "$CONDA_PREFIX" ]
+    then
+        PS1+=" $Green[🐍  $(basename $CONDA_PREFIX)]$Reset"
+    fi
     # Add ending prompt
     PS1+="\n| => "
     PS2="| => "
@@ -201,6 +207,17 @@ export MYSQL_PS1="(\u@\h) [\d]> "
 # Helpful Aliases
 #----------------------------------------------------------------
 alias gcal='gcalcli'
+alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
+alias g='git'
+
+eval "$(thefuck --alias)"
+
+#----------------------------------------------------------------
+# Helpful Functions
+#----------------------------------------------------------------
+copy() {
+    cat $1 | pbcopy
+}
 
 #----------------------------------------------------------------
 # Set up that PATH
@@ -216,3 +233,7 @@ export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
 # Secrets
 #----------------------------------------------------------------
 source ~/.git_secret
+
+#----------------------------------------------------------------
+# Startup actions
+#----------------------------------------------------------------
