@@ -3,8 +3,6 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-set -o vi
-
 ## Making built in commands better
 alias ls='ls --color'
 alias l='ls'
@@ -134,3 +132,5 @@ extract () {
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
+
+alias matlab='/projects/instr/matlab/bin/matlab'
