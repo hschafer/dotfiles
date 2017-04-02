@@ -17,7 +17,15 @@ alias cd='cd -P'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
-function cd() { builtin cd "$@" && ls; }
+function cd() {
+    builtin cd "$@";
+    # For environment stuff
+    if [[ -e ".env" ]]
+    then
+        source .env
+    fi
+    ls;
+}
 # Colorful man pages
 man() {
 	env \
@@ -141,6 +149,7 @@ set_prompt () {
     else
         PS1+="$Reset\\u@\\h "
     fi
+
     # Print the working directory and prompt marker in blue, and reset
     # the text color to the default.
     PS1+=": \w$Reset "
@@ -206,6 +215,7 @@ export MYSQL_PS1="(\u@\h) [\d]> "
 #----------------------------------------------------------------
 # Helpful Aliases
 #----------------------------------------------------------------
+alias password='lpass show --password --clip'
 alias gcal='gcalcli'
 alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
 alias g='git'
@@ -237,3 +247,13 @@ source ~/.git_secret
 #----------------------------------------------------------------
 # Startup actions
 #----------------------------------------------------------------
+# For grading scripts
+PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+PATH="$PATH:/Applications/fman.app/Contents/SharedSupport/bin/"
+
+# Antlr
+CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
+
+tmux
