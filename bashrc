@@ -9,7 +9,7 @@ if [ -f ~/.profile ]; then
 fi
 
 ## Making built in commands better
-alias ls='ls -G'
+alias ls='ls -Gp'
 alias l='ls'
 alias ll='ls -a'
 alias grep='grep --color'
@@ -167,7 +167,11 @@ set_prompt () {
     PS2="| => "
 
 }
-PROMPT_COMMAND='set_prompt'
+PROMPT_COMMAND='set_prompt; history -a; history -n'
+# Make bash not destroy history
+shopt -s histappend
+
+
 
 ## Some stolen stuff from https://gist.github.com/natelandau/10654137
 export BLOCKSIZE=1k
@@ -220,6 +224,10 @@ alias gcal='gcalcli'
 alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
 alias g='git'
 
+alias pod='popd'
+alias pud='pushd'
+alias dirs='dirs -v'
+
 eval "$(thefuck --alias)"
 
 #----------------------------------------------------------------
@@ -240,6 +248,12 @@ export PATH="$PATH:$HOME/.cargo/bin"
 export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
 
 #----------------------------------------------------------------
+# Tmuxinator
+#----------------------------------------------------------------
+export EDITOR='nvim'
+source ~/bin/tmuxinator.bash
+
+#----------------------------------------------------------------
 # Secrets
 #----------------------------------------------------------------
 source ~/.git_secret
@@ -256,4 +270,23 @@ CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
 alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
 alias grun='java org.antlr.v4.gui.TestRig'
 
-tmux
+
+acp() {
+    scp $1 "hschafer@attu.cs.washington.edu:$2"
+}
+
+publish() {
+    if [ $# -lt 2 ]
+    then
+        echo "Usage: publish (FILES)+ ATTU_LOCATION"
+    else
+        scp "${@:1:${#}-1}" "hschafer@attu.cs.washington.edu:/cse/web/courses/cse143/17su/${@: -1}"
+    fi
+
+}
+
+publish_programs() {
+    scp ~/143/workspace/$1/src/*.java "hschafer@attu.cs.washington.edu:/cse/web/courses/cse143/17su/lectures/$1/programs/"
+    #spawn bash -c "scp ~/143/workspace/$1/src/*.java hschafer@attu.cs.washington.edu:/cse/web/courses/cse143/17su/lectures/$1/programs/"
+}
+

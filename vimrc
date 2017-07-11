@@ -21,23 +21,27 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'ervandew/supertab'
 Plugin 'gerw/vim-latex-suite'
+Plugin 'godlygeek/tabular'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'haya14busa/incsearch-easymotion.vim'
+Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'jistr/vim-nerdtree-tabs'
 Bundle 'low-ghost/nerdtree-fugitive'
+Plugin 'mattn/emmet-vim'
 Plugin 'mikelue/vim-maven-plugin'
 Plugin 'morhetz/gruvbox'
 Bundle "myusuf3/numbers.vim"
 Plugin 'neomake/neomake'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
 Plugin 'rizzatti/dash.vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'shime/vim-livedown'
 Plugin 'timonv/vim-cargo'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
-Plugin 'vim-latex/vim-latex'
 Plugin 'vimlab/split-term.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
@@ -51,6 +55,7 @@ filetype plugin indent on
 " ----------------------------------------------------------------------------
 :let mapleader = ","
 :imap jk <Esc>
+:set mouse=nicr
 
 " ----------------------------------------------------------------------------
 "  Coding Shit
@@ -63,7 +68,7 @@ set shiftwidth=4
 set expandtab
 
 "autocmd BufWritePre *.h, *.c, *.cpp, *.py, *.js, *.html, *.css, *.java, *.cls, *.tex FixWhitespace
-autocmd BufWritePre *.py,*.java FixWhitespace
+autocmd BufWritePre *.py,*.java,*.js FixWhitespace
 au BufNewFile,BufRead *.cls set filetype=tex
 
 " ----------------------------------------------------------------------------
@@ -233,16 +238,31 @@ autocmd BufRead Cargo.toml,Cargo.lock,*.rs compiler cargo
     \ '~/Documents/UW/143_16au/notes',
     \ '~/Documents/UW/143_17wi/notes',
     \ '~/Documents/UW/143_17sp/notes',
+    \ '~/Documents/UW/143_17su/notes',
     \ '~/Documents/UW/461/notes',
     \ '~/Documents/UW/401/notes',
     \ '~/Documents/UW/521/notes']
 :let g:notes_suffix = '.txt'
 
 " ----------------------------------------------------------------------------
-"  Vim Markdown
+"  vim-markdown
 " ----------------------------------------------------------------------------
-let vim_markdown_preview_hotkey='<C-m>'
+let g:vim_markdown_folding_disabled = 1
 
+" ----------------------------------------------------------------------------
+"  Livedown
+" ----------------------------------------------------------------------------
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 0
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1
+" the port on which Livedown server will run
+let g:livedown_port = 1337
+
+" ----------------------------------------------------------------------------
+"  Neovim setup
+" ----------------------------------------------------------------------------
+set inccommand=nosplit
 
 " ----------------------------------------------------------------------------
 "  Run directory specific vim settings
@@ -250,3 +270,5 @@ let vim_markdown_preview_hotkey='<C-m>'
 if filereadable(".vim.custom")
     so .vim.custom
 endif
+
+let g:JavaComplete_ShowExternalCommandsOutput = 1

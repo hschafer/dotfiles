@@ -4,7 +4,7 @@
 	smudge = git media smudge %f
 [user]
 	name = Hunter Schafer
-	email = hschafer@cs.washington.edu
+	email = hschafer@uw.edu
 [filter "hawser"]
 	clean = git hawser clean %f
 	smudge = git hawser smudge %f
@@ -12,7 +12,8 @@
 [push]
 	default = simple
 [alias]
-	ci = commit -v
+	ci = commit
+    civ = commit -v
 	st = status
 	co = checkout
 	oneline = log --pretty=oneline
@@ -20,6 +21,7 @@
 	la = log --pretty="format:%ad %h (%an): %s" --date=short
     lg = log --graph
     unstage = reset HEAD
+	praise = blame
 [core]
 	excludesfile = /Users/Hunter/.gitignore_global
 	editor = nvim
