@@ -270,5 +270,3 @@ set inccommand=nosplit
 if filereadable(".vim.custom")
     so .vim.custom
 endif
-
-let g:JavaComplete_ShowExternalCommandsOutput = 1
