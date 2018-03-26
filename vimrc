@@ -30,7 +30,7 @@ Bundle 'low-ghost/nerdtree-fugitive'
 Plugin 'mattn/emmet-vim'
 Plugin 'mikelue/vim-maven-plugin'
 Plugin 'morhetz/gruvbox'
-Bundle "myusuf3/numbers.vim"
+""" Bundle "myusuf3/numbers.vim"
 Plugin 'neomake/neomake'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
@@ -40,7 +40,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'shime/vim-livedown'
 Plugin 'timonv/vim-cargo'
+Plugin 'tpope/vim-db'
 Plugin 'tpope/vim-fugitive'
+Plugin 'udalov/kotlin-vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vimlab/split-term.vim'
 Plugin 'xolox/vim-misc'
@@ -61,14 +63,14 @@ filetype plugin indent on
 "  Coding Shit
 " ----------------------------------------------------------------------------
 syntax on
-set relativenumber
+"set relativenumber
 set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
 
 "autocmd BufWritePre *.h, *.c, *.cpp, *.py, *.js, *.html, *.css, *.java, *.cls, *.tex FixWhitespace
-autocmd BufWritePre *.py,*.java,*.js FixWhitespace
+autocmd BufWritePre *.py,*.java,*.js,*.rs,*.go,*.c,*.tex,*.cls FixWhitespace
 au BufNewFile,BufRead *.cls set filetype=tex
 
 " ----------------------------------------------------------------------------
@@ -191,10 +193,12 @@ map <Leader>g/ <Plug>(incsearch-easymotion-stay)
 "" Because neomake does a better job at rust
 "let g:syntastic_rust_checkers = []
 
-" ----------------------------------------------------------------------------
+" ---------------------------------------------------------------------------
 "  Deoplete
 " ----------------------------------------------------------------------------
 let g:deoplete#enable_at_startup = 1
+" Hide deoplete-jedi preview window
+" autocmd CompleteDone * pclose!
 
 " ----------------------------------------------------------------------------
 "  Omnifunc
@@ -234,13 +238,17 @@ autocmd BufRead Cargo.toml,Cargo.lock,*.rs compiler cargo
 "  Vim-Notes
 " ----------------------------------------------------------------------------
 :let g:notes_directories = [
-    \ '~/Documents/Notes',
+    \ '~/notes',
+    \ '~/Documents/notes',
     \ '~/Documents/UW/143_16au/notes',
     \ '~/Documents/UW/143_17wi/notes',
     \ '~/Documents/UW/143_17sp/notes',
     \ '~/Documents/UW/143_17su/notes',
+    \ '~/Documents/UW/390ha_17au/notes',
     \ '~/Documents/UW/461/notes',
     \ '~/Documents/UW/401/notes',
+    \ '~/Documents/UW/451/notes',
+    \ '~/Documents/UW/546/notes',
     \ '~/Documents/UW/521/notes']
 :let g:notes_suffix = '.txt'
 

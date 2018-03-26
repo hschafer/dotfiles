@@ -12,16 +12,18 @@
 [push]
 	default = simple
 [alias]
-	ci = commit
+	ci = commit -v
     civ = commit -v
 	st = status
 	co = checkout
 	oneline = log --pretty=oneline
 	br = branch
 	la = log --pretty="format:%ad %h (%an): %s" --date=short
-    lg = log --graph
+    lg = log --decorate --all --graph
     unstage = reset HEAD
 	praise = blame
+    subup = submodule update --remote --merge
+    subinit = submodule update --init --recursive
 [core]
 	excludesfile = /Users/Hunter/.gitignore_global
 	editor = nvim
@@ -29,5 +31,10 @@
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

@@ -49,8 +49,8 @@ alias .5='cd ../../../../../'               # Go back 5 directory levels
 alias .6='cd ../../../../../../'
 
 ## Really helpful aliases 
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 alias attu='ssh hschafer@attu.cs.washington.edu'
-alias a='attu'
 alias sql='sqlite3'
 alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
 alias unmount='cd; umount attu; rm -r ~/attu'
@@ -94,7 +94,7 @@ alias difff='git diff --color | diff-so-fancy'
 # added by Anaconda 2.1.0 installer
 export PATH="//anaconda/bin:$PATH"
 # added tex commands
-export PATH="/usr/local/texlive/2014/bin:$PATH"
+export PATH="/Library/TeX/texbin:$PATH"
 # add libsvm
 export PATH="/Library/libsvm-3.20:$PATH"
 # add scala
@@ -104,8 +104,8 @@ export PATH="$PATH:$SCALA_HOME/bin"
 # The orginal version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
 PATH="~/bin:$PATH"
+PATH="$PATH:~/go/bin"
 PATH="$PATH:/usr/local/smlnj/bin"
-export PATH
 
 # Add GHC 7.8.4 to the PATH, via http://ghcformacosx.github.io/
 export GHC_DOT_APP="/Library/ghc-7.8.4.app"
@@ -139,7 +139,7 @@ set_prompt () {
     if [[ $Last_Command == 0 ]]; then
         PS1+="$Green$Checkmark "
     else
-        PS1+="$Red$FancyX "
+        PS1+="$Red$FancyX $? "
     fi
 
     # If root, just print the host in red. Otherwise, print the current user
@@ -251,19 +251,16 @@ export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
 # Tmuxinator
 #----------------------------------------------------------------
 export EDITOR='nvim'
-source ~/bin/tmuxinator.bash
-
-#----------------------------------------------------------------
-# Secrets
-#----------------------------------------------------------------
-source ~/.git_secret
+# source ~/bin/tmuxinator.bash
 
 #----------------------------------------------------------------
 # Startup actions
 #----------------------------------------------------------------
 # For grading scripts
 PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 PATH="$PATH:/Applications/fman.app/Contents/SharedSupport/bin/"
+export IPYTHONDIR="~/.ipython"
 
 # Antlr
 CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
@@ -272,7 +269,7 @@ alias grun='java org.antlr.v4.gui.TestRig'
 
 
 acp() {
-    scp $1 "hschafer@attu.cs.washington.edu:$2"
+    scp $1 "hschafer@attu.cs.washington.edu:~/$2"
 }
 
 publish() {
@@ -284,9 +281,31 @@ publish() {
     fi
 
 }
-
 publish_programs() {
     scp ~/143/workspace/$1/src/*.java "hschafer@attu.cs.washington.edu:/cse/web/courses/cse143/17su/lectures/$1/programs/"
     #spawn bash -c "scp ~/143/workspace/$1/src/*.java hschafer@attu.cs.washington.edu:/cse/web/courses/cse143/17su/lectures/$1/programs/"
 }
 
+# jenv stuff
+#export JENV_ROOT="/usr/local/opt/jenv"
+export PATH="/Users/Hunter/.jenv/shims:${PATH}"
+source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
+jenv rehash 2>/dev/null
+export JENV_LOADED=1
+unset JAVA_HOME
+jenv() {
+  typeset command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  enable-plugin|rehash|shell|shell-options)
+    eval `jenv "sh-$command" "$@"`;;
+  *)
+    command jenv "$command" "$@";;
+  esac
+}
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
