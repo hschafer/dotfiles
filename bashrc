@@ -43,6 +43,8 @@ alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~
 alias unmount='cd; umount attu; rm -r ~/attu'
 alias v='vim'
 alias vims='vim -S .session'
+alias vim='nvim'
+alias view='vim -R'
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 alias ccat='pygmentize -g'
 mcd () { mkdir -p "$1" && cd "$1"; }
@@ -134,3 +136,4 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 alias matlab='/projects/instr/matlab/bin/matlab'
+alias nvim='~/installations/neovim/build/bin/nvim'

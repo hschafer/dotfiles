@@ -20,7 +20,7 @@
 	la = log --pretty="format:%ad %h (%an): %s" --date=short
 [core]
 	excludesfile = /Users/Hunter/.gitignore_global
-	editor = /usr/bin/vim
+	editor = ~/installations/neovim/build/bin/nvim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
