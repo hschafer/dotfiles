@@ -1,87 +1,171 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/Hunter/.oh-my-zsh
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-#ZSH_THEME="robbyrussell"
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/Hunter/.oh-my-zsh"
 ZSH_THEME="agnoster"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-# User configuration
-
-export PATH="/Users/Hunter/.cabal/bin:/Library/ghc-7.8.4.app/Contents/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/Library/libsvm-3.20:/usr/local/texlive/2014/bin:~/Downloads/sox-14.4.1/://anaconda/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/share/scala-2.11.6/bin:~/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-
+plugins=(
+  git
+)
 source $ZSH/oh-my-zsh.sh
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+#----------------------------------------------------------------
+# User configuration
+#----------------------------------------------------------------
+eval "$(thefuck --alias)"
+export EDITOR='nvim'
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+#----------------------------------------------------------------
+# Overriding default commands
+#----------------------------------------------------------------
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+alias vim="nvim"
+alias cat="bat"
+alias ping='prettyping --nolegend'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh  # fzf for CTRL-R
+alias top="sudo htop"  # alias top and fix high sierra bug
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+alias grep='grep --color'
+alias cd='cd -P'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias mkdir='mkdir -pv'
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+#----------------------------------------------------------------
+# Helpful aliases
+#----------------------------------------------------------------
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Moving around
+alias ll='ls -a'
+alias ..='cd ../'
+alias ...='cd ../../'
+alias .2='cd ../..'
+alias .3='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+alias .6='cd ../../../../../../'
+
+
+# Vim
+alias vims='vim -S .session'
+
+function clip() {
+    f=`mktemp`;
+    pbpaste > $f;
+    vim $f;
+    cat $f | pbcopy;
+    rm $f;
+}
+
+# Misc
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
+alias gcal='gcalcli'
+alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
+alias note='jupyter notebook'
+alias pod='popd'
+alias pud='pushd'
+alias dirs='dirs -v'
+
+
+extract () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)     echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+copy() {
+    cat $1 | pbcopy
+}
+
+
+
+#----------------------------------------------------------------
+# PATH Shit
+#----------------------------------------------------------------
+
+# Anaconda
+export PATH="//anaconda/bin:$PATH"
+# added tex commands
+export PATH="/Library/TeX/texbin:$PATH"
+# add libsvm
+export PATH="/Library/libsvm-3.20:$PATH"
+# add scala
+export SCALA_HOME="/usr/local/share/scala-2.11.6"
+export PATH="$PATH:$SCALA_HOME/bin"
+# The orginal version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
+PATH="~/bin:$PATH"
+PATH="$PATH:~/go/bin"
+PATH="$PATH:/usr/local/smlnj/bin"
+export GHC_DOT_APP="/Library/ghc-7.8.4.app"
+if [ -d "$GHC_DOT_APP" ]; then
+    export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+fi
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+export NVM_DIR="/Users/Hunter/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export PATH="$PATH:$HOME/.cargo/bin"
+export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
+
+# Coreutils
+PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+
+PATH="$PATH:/Applications/fman.app/Contents/SharedSupport/bin/"
+export IPYTHONDIR="~/.ipython"
+
+# Antlr
+CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
+
+# Jenv
+export PATH="/Users/Hunter/.jenv/shims:${PATH}"
+source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
+jenv rehash 2>/dev/null
+export JENV_LOADED=1
+unset JAVA_HOME
+jenv() {
+  typeset command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  enable-plugin|rehash|shell|shell-options)
+    eval `jenv "sh-$command" "$@"`;;
+  *)
+    command jenv "$command" "$@";;
+  esac
+}
+
+#----------------------------------------------------------------
+# MySQL
+#----------------------------------------------------------------
+export MYSQL_PS1="(\u@\h) [\d]> "
+
+
