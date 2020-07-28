@@ -52,8 +52,8 @@ alias .6='cd ../../../../../../'
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 alias attu='ssh hschafer@attu.cs.washington.edu'
 alias sql='sqlite3'
-alias mount='cd; mkdir attu; sshfs hschafer@attu.cs.washington.edu: ~/attu; cd ~/attu'
-alias unmount='cd; umount attu; rm -r ~/attu'
+alias mount='cd; mkdir barb; sshfs hschafer@barb.cs.washington.edu:/cse ~/barb; cd ~/barb'
+alias unmount='cd; umount barb; rm -r ~/barb'
 alias vims='vim -S .session'
 USE_MACVIM=false
 function vim() {
@@ -73,6 +73,14 @@ function macvim() {
       USE_MACVIM="true"
    fi
    echo "USE_MACVIM is now $USE_MACVIM"
+}
+
+function clip() {
+    f=`mktemp`;
+    pbpaste > $f;
+    vim $f;
+    cat $f | pbcopy;
+    rm $f;
 }
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 alias ccat='pygmentize -g'
@@ -208,8 +216,8 @@ fi
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-export NVM_DIR="/Users/Hunter/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+#export NVM_DIR="/Users/Hunter/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 #----------------------------------------------------------------
 # MySQL
@@ -223,6 +231,8 @@ alias password='lpass show --password --clip'
 alias gcal='gcalcli'
 alias matlab='/Applications/MATLAB_R2016b.app/bin/matlab'
 alias g='git'
+alias note='jupyter notebook'
+
 
 alias pod='popd'
 alias pud='pushd'
@@ -257,8 +267,8 @@ export EDITOR='nvim'
 # Startup actions
 #----------------------------------------------------------------
 # For grading scripts
-PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
-MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+#PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
+#MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 PATH="$PATH:/Applications/fman.app/Contents/SharedSupport/bin/"
 export IPYTHONDIR="~/.ipython"
 
@@ -288,24 +298,28 @@ publish_programs() {
 
 # jenv stuff
 #export JENV_ROOT="/usr/local/opt/jenv"
-export PATH="/Users/Hunter/.jenv/shims:${PATH}"
-source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
-jenv rehash 2>/dev/null
-export JENV_LOADED=1
-unset JAVA_HOME
-jenv() {
-  typeset command
-  command="$1"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
+#export PATH="/Users/Hunter/.jenv/shims:${PATH}"
+#source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
+#jenv rehash 2>/dev/null
+#export JENV_LOADED=1
+#unset JAVA_HOME
+#jenv() {
+#  typeset command
+#  command="$1"
+#  if [ "$#" -gt 0 ]; then
+#    shift
+#  fi
+#
+#  case "$command" in
+#  enable-plugin|rehash|shell|shell-options)
+#    eval `jenv "sh-$command" "$@"`;;
+#  *)
+#    command jenv "$command" "$@";;
+#  esac
+#}
+#
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-  case "$command" in
-  enable-plugin|rehash|shell|shell-options)
-    eval `jenv "sh-$command" "$@"`;;
-  *)
-    command jenv "$command" "$@";;
-  esac
-}
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source /Users/Hunter/Library/Preferences/org.dystroy.broot/launcher/bash/br

@@ -8,11 +8,13 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'JamshedVesuna/vim-markdown-preview'
-Plugin 'Shougo/deoplete.nvim'
+""" Plugin 'Shougo/deoplete.nvim'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'artur-shaik/vim-javacomplete2'
+""" Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'derekwyatt/vim-scala'
@@ -20,17 +22,18 @@ Plugin 'digitaltoad/vim-pug'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'ervandew/supertab'
-Plugin 'gerw/vim-latex-suite'
 Plugin 'godlygeek/tabular'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'haya14busa/incsearch-easymotion.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'lervag/vimtex'
 Bundle 'low-ghost/nerdtree-fugitive'
 Plugin 'mattn/emmet-vim'
 Plugin 'mikelue/vim-maven-plugin'
 Plugin 'morhetz/gruvbox'
 """ Bundle "myusuf3/numbers.vim"
+Plugin 'neoclide/coc.nvim'
 Plugin 'neomake/neomake'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'racer-rust/vim-racer'
@@ -38,16 +41,23 @@ Plugin 'rizzatti/dash.vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'sheerun/vim-polyglot'
 Plugin 'shime/vim-livedown'
+Plugin 'SirVer/ultisnips'
 Plugin 'timonv/vim-cargo'
 Plugin 'tpope/vim-db'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
 Plugin 'udalov/kotlin-vim'
 Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vimlab/split-term.vim'
+Plugin 'wellle/context.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
-Plugin 'zchee/deoplete-jedi'
+Plugin 'xuhdev/vim-latex-live-preview'
+""" Plugin 'zchee/deoplete-jedi'
 
 call vundle#end()
 filetype plugin indent on
@@ -72,6 +82,7 @@ set expandtab
 "autocmd BufWritePre *.h, *.c, *.cpp, *.py, *.js, *.html, *.css, *.java, *.cls, *.tex FixWhitespace
 autocmd BufWritePre *.py,*.java,*.js,*.rs,*.go,*.c,*.tex,*.cls FixWhitespace
 au BufNewFile,BufRead *.cls set filetype=tex
+
 
 " ----------------------------------------------------------------------------
 "  Moving around, tabs, windows and buffers
@@ -150,7 +161,8 @@ colorscheme gruvbox
 " ----------------------------------------------------------------------------
 "  NERDTree
 " ----------------------------------------------------------------------------
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+" map <Leader>n <plug>NERDTreeTabsToggle<CR>
+nmap ,n :NERDTreeFind<CR>
 let NERDTreeIgnore=['\.pyc$', '\.class', '\.o']
 
 " ----------------------------------------------------------------------------
@@ -158,7 +170,6 @@ let NERDTreeIgnore=['\.pyc$', '\.class', '\.o']
 " ----------------------------------------------------------------------------
 let g:airline_powerline_fonts = 1
 set laststatus=2  " To appear by default
-set noshowmode    " Hide statusline
 
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
@@ -167,6 +178,7 @@ let g:airline#extensions#quickfix#enabled = 1
 "let g:airline_section_warning .=
 "	\ '%{neomake#statusline#LoclistStatus()}'.
 "	\ 'qf: %{neomake#statusline#QflistStatus()}'
+
 
 " ----------------------------------------------------------------------------
 "  Easy Motion
@@ -227,7 +239,7 @@ let g:neomake_verbose = 0
 "let g:neomake_logfile = "neo.log"
 let g:neomake_list_height = 4
 let g:neomake_open_list = 2  " So it doesn't jump down to Quickfix
-let g:neomake_airline = 1
+" let g:neomake_airline = 1
 
 " ----------------------------------------------------------------------------
 "  Auto compiler
@@ -240,15 +252,20 @@ autocmd BufRead Cargo.toml,Cargo.lock,*.rs compiler cargo
 :let g:notes_directories = [
     \ '~/notes',
     \ '~/Documents/notes',
+    \ '~/Documents/UW/notes',
     \ '~/Documents/UW/143_16au/notes',
     \ '~/Documents/UW/143_17wi/notes',
     \ '~/Documents/UW/143_17sp/notes',
     \ '~/Documents/UW/143_17su/notes',
+    \ '~/Documents/Teaching/143/18au/notes',
     \ '~/Documents/UW/390ha_17au/notes',
     \ '~/Documents/UW/461/notes',
     \ '~/Documents/UW/401/notes',
+    \ '~/Documents/UW/416/notes',
     \ '~/Documents/UW/451/notes',
+    \ '~/Documents/UW/473/notes',
     \ '~/Documents/UW/546/notes',
+    \ '~/Documents/UW/552/notes',
     \ '~/Documents/UW/521/notes']
 :let g:notes_suffix = '.txt'
 
@@ -261,16 +278,60 @@ let g:vim_markdown_folding_disabled = 1
 "  Livedown
 " ----------------------------------------------------------------------------
 " should markdown preview get shown automatically upon opening markdown buffer
-let g:livedown_autorun = 0
+let g:livedown_autorun = 1
 " should the browser window pop-up upon previewing
 let g:livedown_open = 1
 " the port on which Livedown server will run
 let g:livedown_port = 1337
 
 " ----------------------------------------------------------------------------
+" vim markdown preview
+" ----------------------------------------------------------------------------
+let vim_markdown_preview_github=1
+let vim_markdown_preview_browser='Google Chrome'
+let g:livepreview_previewer = 'open -a Skim'
+let g:livepreview_engine = 'lualatex'
+
+" ----------------------------------------------------------------------------
+" Surround
+" ----------------------------------------------------------------------------
+if exists('g:loaded_surround')
+    " vim-surround: q for `foo' and Q for ``foo''
+    let b:surround_{char2nr('q')} = "`\r'"
+    let b:surround_{char2nr('Q')} = "``\r''"
+endif
+
+" ----------------------------------------------------------------------------
 "  Neovim setup
 " ----------------------------------------------------------------------------
 set inccommand=nosplit
+let g:python3_host_prog = '/Users/Hunter/anaconda3/bin/python'
+
+" ----------------------------------------------------------------------------
+"  Snippets
+" ----------------------------------------------------------------------------
+
+" From https://github.com/Shougo/neosnippet.vim
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=nc
+endif
+
 
 " ----------------------------------------------------------------------------
 "  Run directory specific vim settings
@@ -278,3 +339,7 @@ set inccommand=nosplit
 if filereadable(".vim.custom")
     so .vim.custom
 endif
+
+hi SpellBad cterm=underline,bold ctermfg=red
+
+

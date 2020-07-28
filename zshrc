@@ -3,19 +3,35 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/Hunter/.oh-my-zsh"
-ZSH_THEME="agnoster"
+#ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel9k/powerlevel9k"
 
-plugins=(
-  git
-)
+
+plugins=(git git-auto-fetch)
 source $ZSH/oh-my-zsh.sh
+
+
 
 #----------------------------------------------------------------
 # User configuration
 #----------------------------------------------------------------
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(thefuck --alias)"
 export EDITOR='nvim'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#----------------------------------------------------------------
+# Path setup
+#----------------------------------------------------------------
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs anaconda)
+
+POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='015'
+POWERLEVEL9K_ANACONDA_LEFT_DELIMITER=""
+POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER=""
+POWERLEVEL9K_ANACONDA_BACKGROUND='002'
+# POWERLEVEL9K_PYTHON_ICON="🐍"
+
 
 #----------------------------------------------------------------
 # Overriding default commands
@@ -33,6 +49,11 @@ alias cd='cd -P'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
+
+function chpwd() {
+    emulate -L zsh
+    ls
+}
 
 #----------------------------------------------------------------
 # Helpful aliases
@@ -52,6 +73,10 @@ alias .6='cd ../../../../../../'
 # Vim
 alias vims='vim -S .session'
 
+function bim() {
+	vim "scp://hschafer@barb.cs.washington.edu/$1"
+}
+
 function clip() {
     f=`mktemp`;
     pbpaste > $f;
@@ -69,6 +94,18 @@ alias note='jupyter notebook'
 alias pod='popd'
 alias pud='pushd'
 alias dirs='dirs -v'
+alias op_signin='eval $(op signin my)'
+alias mount='cd &&  mkdir barb && sshfs hschafer@barb.cs.washington.edu:/cse ~/barb && cd ~/barb'
+alias unmount='cd && umount barb &&  rm -r ~/barb'
+
+bcp() {
+    if [ -z "$2" ]
+    then
+        scp $1 barb:~/$1
+    else
+        scp $1 barb:~/$2
+    fi
+}
 
 
 extract () {
@@ -96,14 +133,26 @@ copy() {
     cat $1 | pbcopy
 }
 
+alias colab="jupyter notebook \
+  --NotebookApp.allow_origin='https://colab.research.google.com' \
+  --port=8888 \
+  --NotebookApp.port_retries=0"
 
+lec() {
+    brigthness 1;
+    caffeinate -u -t 3600;
+}
+
+javar() {
+    javac $1.java && java $1
+}
 
 #----------------------------------------------------------------
 # PATH Shit
 #----------------------------------------------------------------
 
 # Anaconda
-export PATH="//anaconda/bin:$PATH"
+# export PATH="$HOME/anaconda3/bin:$PATH"  # commented out by conda initialize
 # added tex commands
 export PATH="/Library/TeX/texbin:$PATH"
 # add libsvm
@@ -143,29 +192,70 @@ alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
 alias grun='java org.antlr.v4.gui.TestRig'
 
 # Jenv
-export PATH="/Users/Hunter/.jenv/shims:${PATH}"
-source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
-jenv rehash 2>/dev/null
-export JENV_LOADED=1
-unset JAVA_HOME
-jenv() {
-  typeset command
-  command="$1"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
+ eval "$(jenv init -)"
+#export PATH="/Users/Hunter/.jenv/shims:${PATH}"
+#source "/usr/local/Cellar/jenv/0.4.4/libexec/libexec/../completions/jenv.bash"
+#jenv rehash 2>/dev/null
+#export JENV_LOADED=1
+#unset JAVA_HOME
+#jenv() {
+#  typeset command
+#  command="$1"
+#  if [ "$#" -gt 0 ]; then
+#    shift
+#  fi
+#
+#  case "$command" in
+#  enable-plugin|rehash|shell|shell-options)
+#    eval `jenv "sh-$command" "$@"`;;
+#  *)
+#    command jenv "$command" "$@";;
+#  esac
+#}
 
-  case "$command" in
-  enable-plugin|rehash|shell|shell-options)
-    eval `jenv "sh-$command" "$@"`;;
-  *)
-    command jenv "$command" "$@";;
-  esac
-}
+# Tmuxinator
+source ~/.bin/tmuxinator.zsh
+
+# MacPorts
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export MANPATH=/opt/local/share/man:$MANPATH
+
+
+# Rbenv
+eval "$(rbenv init -)"
 
 #----------------------------------------------------------------
 # MySQL
 #----------------------------------------------------------------
 export MYSQL_PS1="(\u@\h) [\d]> "
 
+#----------------------------------------------------------------
+# Spark
+#----------------------------------------------------------------
+#export SPARK_HOME=/usr/local/spark
+#export PATH=$PATH:$SPARK_HOME/bin
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/Hunter/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/Hunter/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/Hunter/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/Hunter/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
+
+if [ -n "$TMUX" ]; then
+    conda deactivate
+    conda activate base
+fi
+
+source /Users/Hunter/Library/Preferences/org.dystroy.broot/launcher/bash/br
