@@ -5,6 +5,10 @@ return require('packer').startup(function()
   -- Other packages
   use 'bronson/vim-trailing-whitespace'
   use 'flazz/vim-colorschemes'
+  use {
+      'francoiscabrol/ranger.vim',
+      requires = { {'rbgrouleff/bclose.vim'} }
+  }
   use 'jeetsukumaran/vim-buffergator'
   use 'lervag/vimtex'
   use 'mattn/emmet-vim'
@@ -16,6 +20,7 @@ return require('packer').startup(function()
       'nvim-telescope/telescope.nvim',
       requires = { {'nvim-lua/plenary.nvim'} }
   }
+  use 'nvim-treesitter/nvim-treesitter'
   use 'scrooloose/nerdcommenter'
   use 'scrooloose/nerdtree'
   use 'Shougo/neosnippet-snippets'

@@ -2,6 +2,9 @@
 "  Basic editor configuration
 " ----------------------------------------------------------------------------
 
+" Re-source nvim config
+:command Src source $MYVIMRC
+
 " Leaders and stuff
 :let mapleader = ","
 :imap jk <Esc>
@@ -99,3 +102,10 @@ nnoremap <Leader>0 :10b<CR>
 " ----------------------------------------------------------------------------
 set background=dark
 colorscheme gruvbox
+
+" ----------------------------------------------------------------------------
+"  Run directory specific vim settings
+" ----------------------------------------------------------------------------
+if filereadable(".vim.custom")
+    source .vim.custom
+endif

@@ -38,13 +38,18 @@ let g:vimtex_view_general_options = '-r @line @pdf @tex'
 let g:vimtex_compiler_progname = 'lualatex'
 
 " ----------------------------------------------------------------------------
+"  Ranger - Navigating folders
+" ----------------------------------------------------------------------------
+let g:ranger_map_keys = 0
+map <leader>r :Ranger<CR>
+
+" ----------------------------------------------------------------------------
 "  Telescope - Fuzzy Finder
 " ----------------------------------------------------------------------------
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
 
 " ----------------------------------------------------------------------------
 "  COC - Completion plugin
@@ -121,7 +126,3 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
