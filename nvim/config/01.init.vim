@@ -33,7 +33,6 @@ map j gj
 map k gk
 
 " Search shortcuts
-map <c-space> ?
 map <silent> <leader><cr> :noh<cr>
 
 " Better window default
