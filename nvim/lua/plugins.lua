@@ -4,7 +4,6 @@ return require('packer').startup(function()
 
   -- Other packages
   use 'bronson/vim-trailing-whitespace'
-  use 'ctrlpvim/ctrlp.vim'
   use 'flazz/vim-colorschemes'
   use 'jeetsukumaran/vim-buffergator'
   use 'lervag/vimtex'
@@ -12,6 +11,10 @@ return require('packer').startup(function()
   use 'morhetz/gruvbox'
   use {
       'neoclide/coc.nvim', branch = 'release'
+  }
+  use {
+      'nvim-telescope/telescope.nvim',
+      requires = { {'nvim-lua/plenary.nvim'} }
   }
   use 'scrooloose/nerdcommenter'
   use 'scrooloose/nerdtree'

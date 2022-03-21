@@ -1,6 +1,16 @@
 " ----------------------------------------------------------------------------
+" Packer - Package manager
+" ----------------------------------------------------------------------------
+
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
+
+" ----------------------------------------------------------------------------
 "  NERDTree
 " ----------------------------------------------------------------------------
+
 " map <Leader>n <plug>NERDTreeTabsToggle<CR>
 nmap ,n :NERDTreeFind<CR>
 let NERDTreeIgnore=['\.pyc$', '\.class', '\.o']
@@ -28,14 +38,19 @@ let g:vimtex_view_general_options = '-r @line @pdf @tex'
 let g:vimtex_compiler_progname = 'lualatex'
 
 " ----------------------------------------------------------------------------
-"  COC - Most of this is from https://github.com/neoclide/coc.nvim
+"  Telescope - Fuzzy Finder
 " ----------------------------------------------------------------------------
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+
+" ----------------------------------------------------------------------------
+"  COC - Completion plugin
+"  (Most of this is from https://github.com/neoclide/coc.nvim)
+" ----------------------------------------------------------------------------
 set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
 
 " Give more space for displaying messages.
 set cmdheight=2
@@ -82,11 +97,6 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -115,12 +125,3 @@ nmap <leader>rn <Plug>(coc-rename)
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-

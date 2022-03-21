@@ -1,25 +1,43 @@
 " ----------------------------------------------------------------------------
 "  Basic editor configuration
 " ----------------------------------------------------------------------------
+
+" Leaders and stuff
+:let mapleader = ","
+:imap jk <Esc>
+
+nnoremap ; :
+
+" Highlighting and formatting
 syntax on
 set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Side scrolling
+set nowrap
+set sidescroll=1
+
+" File types
 autocmd BufWritePre *.py,*.java,*.js,*.rs,*.go,*.c,*.tex,*.cls FixWhitespace
 au BufNewFile,BufRead *.cls set filetype=tex
 
-:let mapleader = ","
-:imap jk <Esc>
+" Other config
 :set mouse=nicr
+set visualbell "no sounds - from dbalatero
+
+" Backups
+set noswapfile
+set nobackup
+set nowritebackup
+
 
 " ----------------------------------------------------------------------------
 "  Neovim specific setup
 " ----------------------------------------------------------------------------
 set inccommand=nosplit
 let g:python3_host_prog = '/Users/Hunter/opt/anaconda3/bin/python'
-
 
 " ----------------------------------------------------------------------------
 "  Moving around, tabs, windows and buffers
@@ -38,6 +56,10 @@ map <silent> <leader><cr> :noh<cr>
 " Better window default
 set splitright
 set splitbelow
+
+" Simpler split commands
+nnoremap <silent> vv <C-w>v
+nnoremap <silent> ss <C-w>s
 
 " Smart way to move between windows
 nnoremap <C-j> <C-W>j
@@ -72,15 +94,6 @@ nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
 
-" ----------------------------------------------------------------------------
-"  Cursor Setup
-" ----------------------------------------------------------------------------
-" Change cursor shape between insert and normal mode in iTerm2.app
-"if $TERM_PROGRAM =~ "iTerm"
-"    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-"    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
-"endif
-":let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 " ----------------------------------------------------------------------------
 "  Appearance
