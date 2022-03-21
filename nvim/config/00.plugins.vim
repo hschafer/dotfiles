@@ -1,4 +1,4 @@
-" First install plugins
+" First install plugins (dotfiles/lua/plugins.lua)
 lua require('plugins')
 
 " ----------------------------------------------------------------------------
