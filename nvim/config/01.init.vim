@@ -82,7 +82,6 @@ map <leader>t<leader> :tabnext
 " Useful mappings for managing buffers
 " nnoremap <Leader>l :ls<CR>
 nnoremap <Leader>b :bp<CR>
-nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>1 :1b<CR>
 nnoremap <Leader>2 :2b<CR>
 nnoremap <Leader>3 :3b<CR>
