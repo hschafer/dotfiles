@@ -8,17 +8,22 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH_THEME="powerlevel10k/powerlevel10k"
 export ZSH="/Users/Hunter/.oh-my-zsh"
-plugins=(git git-auto-fetch zsh-autosuggestions)
+plugins=(git git-auto-fetch zsh-autosuggestions conda-zsh-completion)
+#plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
-  
+autoload -U compinit && compinit
+
 #----------------------------------------------------------------
 # User configuration
 #----------------------------------------------------------------
 eval "$(thefuck --alias)"
 export EDITOR='nvim'
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
- 
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 #----------------------------------------------------------------
 # Prompt setup
 #----------------------------------------------------------------
@@ -27,7 +32,7 @@ export EDITOR='nvim'
 
 #  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
 #  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs anaconda)
-#  
+#
 #  POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='015'
 #  POWERLEVEL9K_ANACONDA_LEFT_DELIMITER=""
 #  POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER=""
@@ -51,16 +56,16 @@ alias mkdir='mkdir -pv'
 
 #  alias ping='prettyping --nolegend'
 #  alias top="sudo htop"  # alias top and fix high sierra bug
-#  
+#
 function chpwd() {
     emulate -L zsh
     ls
 }
-  
+
 #----------------------------------------------------------------
 # Helpful aliases
 #----------------------------------------------------------------
-  
+
 # Moving around
 alias ll='ls -a'
 alias ..='cd ../'
@@ -73,14 +78,16 @@ alias .6='cd ../../../../../../'
 alias pod='popd'
 alias pud='pushd'
 
-#  
+alias ca="conda activate"
+
+#
 #  # Vim
 #  alias vims='vim -S .session'
-#  
+#
 #  function bim() {
 #  	vim "scp://hschafer@barb.cs.washington.edu/$1"
-#  
-#  
+#
+#
 #  function clip() {
 #      f=`mktemp`;
 #      pbpaste > $f;
@@ -88,7 +95,7 @@ alias pud='pushd'
 #      cat $f | pbcopy;
 #      rm $f;
 #  }
-#  
+#
 # Misc
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
@@ -99,7 +106,7 @@ alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resour
 #  alias op_signin='eval $(op signin my)'
 #  alias mount='cd &&  mkdir barb && sshfs hschafer@barb.cs.washington.edu:/cse ~/barb && cd ~/barb'
 #  alias unmount='cd && umount barb &&  rm -r ~/barb'
-#  
+#
 #  bcp() {
 #      if [ -z "$2" ]
 #      then
@@ -108,8 +115,8 @@ alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resour
 #          scp $1 barb:~/$2
 #      fi
 #  }
-#  
-#  
+#
+#
 extract () {
     if [ -f $1 ] ; then
       case $1 in
@@ -130,16 +137,16 @@ extract () {
         echo "'$1' is not a valid file"
     fi
 }
-  
+
 copy() {
     cat $1 | pbcopy
 }
-  
+
 #  alias colab="jupyter notebook \
 #    --NotebookApp.allow_origin='https://colab.research.google.com' \
 #    --port=8888 \
 #    --NotebookApp.port_retries=0"
-  
+
 lec() {
     brigthness 1;
     caffeinate -u -t 3600;
@@ -148,7 +155,15 @@ lec() {
 javar() {
     javac $1.java && java $1
 }
-  
+
+llatex2() {
+    if [ $1 = "-o" ] ; then
+        lualatex $2.tex && lualatex $2.tex && open $2.pdf
+    else
+        lualatex $1.tex && lualatex $1.tex
+    fi
+}
+
 #----------------------------------------------------------------
 # PATH Shit
 #----------------------------------------------------------------
@@ -173,6 +188,8 @@ unset __conda_setup
 [[ -z $TMUX ]] || conda deactivate; conda activate base
 
 
+export PATH="$HOME/.local/bin:$PATH"
+
 #  # added tex commands
 #  export PATH="/Library/TeX/texbin:$PATH"
 #  # add libsvm
@@ -189,28 +206,28 @@ unset __conda_setup
 #  if [ -d "$GHC_DOT_APP" ]; then
 #      export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
 #  fi
-#  
+#
 #  export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-#  
+#
 #  export NVM_DIR="/Users/Hunter/.nvm"
 #  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-#  
+#
 #  export PATH="$PATH:$HOME/.cargo/bin"
 #  export RUST_SRC_PATH="/usr/local/rust/rustc-1.11.0/src"
-#  
+#
 #  # Coreutils
 #  PATH="$PATH:/usr/local/opt/coreutils/libexec/gnubin"
 #  MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-#  
-#  
+#
+#
 #  PATH="$PATH:/Applications/fman.app/Contents/SharedSupport/bin/"
 #  export IPYTHONDIR="~/.ipython"
-#  
+#
 #  # Antlr
 #  CLASSPATH=".:/usr/local/lib/antlr-4.6-complete.jar:$CLASSPATH"
 #  alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
 #  alias grun='java org.antlr.v4.gui.TestRig'
-#  
+#
 #  # Jenv
 #   eval "$(jenv init -)"
 #  #export PATH="/Users/Hunter/.jenv/shims:${PATH}"
@@ -232,36 +249,36 @@ unset __conda_setup
 #  #    command jenv "$command" "$@";;
 #  #  esac
 #  #}
-#  
+#
 #  # Tmuxinator
 #  source ~/.bin/tmuxinator.zsh
-#  
+#
 #  # MacPorts
 #  export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 #  export MANPATH=/opt/local/share/man:$MANPATH
-#  
-#  
+#
+#
 #  # Rbenv
 #  eval "$(rbenv init -)"
-#  
+#
 #  #----------------------------------------------------------------
 #  # MySQL
 #  #----------------------------------------------------------------
 #  export MYSQL_PS1="(\u@\h) [\d]> "
-#  
+#
 #  #----------------------------------------------------------------
 #  # Spark
 #  #----------------------------------------------------------------
 #  #export SPARK_HOME=/usr/local/spark
 #  #export PATH=$PATH:$SPARK_HOME/bin
-#  
-#  
+#
+#
 #  export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 #  export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
-#  
+#
 #  if [ -n "$TMUX" ]; then
 #      conda deactivate
 #      conda activate base
 #  fi
-#  
+#
 #  source /Users/Hunter/Library/Preferences/org.dystroy.broot/launcher/bash/br

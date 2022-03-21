@@ -14,11 +14,23 @@ call neobundle#begin(expand('/Users/Hunter/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'jeetsukumaran/vim-buffergator'
+NeoBundle 'lervag/vimtex'
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'morhetz/gruvbox'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'vim-airline/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
+
 
 " Required:
 call neobundle#end()
@@ -39,7 +51,6 @@ NeoBundleCheck
 " Plugin 'Xuyuanp/nerdtree-git-plugin'
 " Plugin 'altercation/vim-colors-solarized'
 " """ Plugin 'artur-shaik/vim-javacomplete2'
-" Plugin 'bronson/vim-trailing-whitespace'
 " Plugin 'ctrlpvim/ctrlp.vim'
 " Plugin 'derekwyatt/vim-scala'
 " Plugin 'digitaltoad/vim-pug'
@@ -51,7 +62,6 @@ NeoBundleCheck
 " Plugin 'haya14busa/incsearch-easymotion.vim'
 " Plugin 'jeetsukumaran/vim-buffergator'
 " Plugin 'jistr/vim-nerdtree-tabs'
-" Plugin 'lervag/vimtex'
 " Bundle 'low-ghost/nerdtree-fugitive'
 " Plugin 'mattn/emmet-vim'
 " Plugin 'mikelue/vim-maven-plugin'
@@ -94,7 +104,7 @@ NeoBundleCheck
 "  Neovim setup
 " ----------------------------------------------------------------------------
 set inccommand=nosplit
-let g:python3_host_prog = '/Users/Hunter/anaconda3/bin/python'
+let g:python3_host_prog = '/Users/Hunter/opt/anaconda3/bin/python'
 
 " ----------------------------------------------------------------------------
 "  Coding Shit
@@ -146,7 +156,7 @@ map <leader>tm :tabmove
 map <leader>t<leader> :tabnext
 
 " Useful mappings for managing buffers
-nnoremap <Leader>l :ls<CR>
+" nnoremap <Leader>l :ls<CR>
 nnoremap <Leader>b :bp<CR>
 nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>1 :1b<CR>
@@ -176,27 +186,56 @@ endif
 set background=dark
 colorscheme gruvbox
 
-" " ----------------------------------------------------------------------------
-" "  NERDTree
-" " ----------------------------------------------------------------------------
-" " map <Leader>n <plug>NERDTreeTabsToggle<CR>
-" nmap ,n :NERDTreeFind<CR>
-" let NERDTreeIgnore=['\.pyc$', '\.class', '\.o']
-" 
-" " ----------------------------------------------------------------------------
-" "  Vim Airline
-" " ----------------------------------------------------------------------------
-" let g:airline_powerline_fonts = 1
-" set laststatus=2  " To appear by default
-" 
-" " Enable the list of buffers
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#quickfix#enabled = 1
-" 
-" "let g:airline_section_warning .=
-" "	\ '%{neomake#statusline#LoclistStatus()}'.
-" "	\ 'qf: %{neomake#statusline#QflistStatus()}'
-" 
+" ----------------------------------------------------------------------------
+"  Latex
+" ----------------------------------------------------------------------------
+let g:tex_flavor = 'lualatex'
+let g:vimtex_view_method = "skim"
+let g:vimtex_view_general_viewer
+            \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '-r @line @pdf @tex'
+let g:vimtex_compiler_progname = 'lualatex'
+
+" This is temporary stuff to work with 373 setup
+let g:vimtex_compiler_latexmk = {
+    \ 'options' : [
+    \   '-lualatex',
+    \   '-shell-escape',
+    \   '-verbose',
+    \   '-file-line-error',
+    \   '-synctex=1',
+    \   '-interaction=nonstopmode',
+    \ ],
+    \}
+
+" ----------------------------------------------------------------------------
+"  NERDTree
+" ----------------------------------------------------------------------------
+" map <Leader>n <plug>NERDTreeTabsToggle<CR>
+nmap ,n :NERDTreeFind<CR>
+let NERDTreeIgnore=['\.pyc$', '\.class', '\.o']
+
+" ----------------------------------------------------------------------------
+"  Vim Airline
+" ----------------------------------------------------------------------------
+let g:airline_powerline_fonts = 1
+set laststatus=2  " To appear by default
+
+let g:airline_theme='gruvbox'
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#quickfix#enabled = 1
+
+" let g:airline_section_warning .=
+"   \ '%{neomake#statusline#LoclistStatus()}'.
+"	\ 'qf: %{neomake#statusline#QflistStatus()}'
+
+" ----------------------------------------------------------------------------
+"  Jedi
+" ----------------------------------------------------------------------------
+let g:jedi#usages_command = "gu"
+
 " " ----------------------------------------------------------------------------
 " "  Easy Motion
 " " ----------------------------------------------------------------------------
